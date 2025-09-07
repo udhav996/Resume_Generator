@@ -242,6 +242,73 @@
       }
     }
 
+    /* ✅ Responsive Styles for Template 2 */
+@media (max-width: 768px) {
+  .resume-container {
+    grid-template-columns: 1fr;   /* Stack columns */
+    width: 100%;
+  }
+
+  .left-column {
+    padding: 20px;
+    text-align: center;          /* Center sidebar content */
+  }
+
+  .profile-photo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .name {
+    font-size: 20px;
+  }
+
+  .title {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .right-column {
+    padding: 20px;
+    margin-top: 0;
+  }
+
+  .right-section h2 {
+    font-size: 16px;
+  }
+
+  .desc,
+  .contact-item,
+  .list-item,
+  ul li {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .name {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 12px;
+  }
+
+  .right-section h2 {
+    font-size: 15px;
+  }
+
+  .desc,
+  ul li {
+    font-size: 11px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -433,3 +500,4 @@ function downloadPDF() {
 </body>
 
 </html>
+
