@@ -242,47 +242,7 @@
       }
     }
 
-    /* ✅ Keep same laptop look on mobile */
-.resume-container {
-  max-width: 100%;   /* don’t exceed screen */
-  width: 700px;      /* laptop default */
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 280px 1fr; /* always 2 columns */
-}
-
-.left-column, .right-column {
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-}
-
-/* Ensure contact info and long URLs wrap */
-.contact-item span,
-.list-item span,
-ul li,
-.desc {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  white-space: normal;
-}
-
-/* Adjust photo scaling on small screens */
-@media (max-width: 480px) {
-  .profile-photo {
-    width: 120px;
-    height: 120px;
-  }
-  .name {
-    font-size: 18px;
-  }
-  .title {
-    font-size: 12px;
-  }
-}
-
-   
+  
 
   </style>
 </head>
@@ -475,6 +435,7 @@ function downloadPDF() {
 </body>
 
 </html>
+
 
 
 
