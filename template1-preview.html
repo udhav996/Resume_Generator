@@ -220,9 +220,11 @@ function populateResume() {
   };
 
   // Photo
-  const photo = params.get('photo');
-  if (photo) document.getElementById('profilePhoto').src = photo;
-
+ // New ✅:
+let photo = sessionStorage.getItem("resumePhoto"); 
+if (photo) {
+  document.getElementById("profilePhoto").src = photo;
+}
   // Name & Title
   if (params.get('fullName')) document.getElementById('displayName').textContent = params.get('fullName').toUpperCase();
   if (params.get('jobRole')) document.getElementById('displayTitle').textContent = params.get('jobRole');
@@ -310,3 +312,4 @@ function downloadPDF() {
 
 </body>
 </html>
+
