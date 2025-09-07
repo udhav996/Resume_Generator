@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Template 4 Resume</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:wght@400&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-    /* ✅ Center wrapper */
+    /* Wrapper */
     .wrapper {
       display: flex;
       flex-direction: column;
@@ -39,12 +39,23 @@
       font-size: 14px;
     }
 
+    /* Resume */
     .resume {
       width: 750px;
       background: #fff;
       padding: 30px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 20px;
+
+      /* ✅ scaling for mobile */
+      transform: scale(0.85);
+      transform-origin: top center;
+    }
+
+    @media (min-width: 900px) {
+      .resume {
+        transform: scale(1);
+      }
     }
 
     /* Header */
@@ -109,7 +120,6 @@
 
     .section {
       margin-bottom: 25px;
-      padding-left: 0px;
     }
     .section h2 {
       font-size: 18px;
@@ -123,7 +133,6 @@
       align-items: center;
       gap: 8px;
       color: #222;
-      padding: 10px;
     }
     .section h2 i {
       color: #444;
@@ -141,6 +150,7 @@
     .grid > div {
       min-width: 0;
     }
+
     .section,
     .section li,
     .contact span,
@@ -148,18 +158,6 @@
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: normal;
-    }
-
-    /* ✅ Force desktop-like scaling on mobile */
-    .resume {
-      transform: scale(0.85);
-      transform-origin: top center;
-    }
-
-    @media (min-width: 900px) {
-      .resume {
-        transform: scale(1);
-      }
     }
   </style>
 </head>
@@ -285,7 +283,7 @@
       if (params.get('github')) setText('githubDisplay', params.get('github')); else document.getElementById('githubItem').style.display = "none";
     }
 
-    // Profile
+    // Profile (Summary)
     const summary = params.get('summary');
     if (summary) {
       document.getElementById('summaryDisplay').innerHTML = summary.replace(/\n/g, "<br>");
@@ -293,6 +291,7 @@
       document.getElementById('profileSection').style.display = "none";
     }
 
+    // Sections
     fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
     fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
     fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
@@ -307,9 +306,9 @@
 
   function downloadPDF() {
     const params = new URLSearchParams(window.location.search);
-    const pdfSize = params.get('pdfSize') || 'a4'; 
+    const pdfSize = params.get('pdfSize') || 'a4';
 
-    const element = document.querySelector('.resume');
+    const element = document.querySelector('.resume-container, .resume');
     if (!element) {
       alert("Resume content not found!");
       return;
