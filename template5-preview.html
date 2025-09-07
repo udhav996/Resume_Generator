@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Template 5 Resume</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
       background: #f4f4f4;
     }
 
-    /* ✅ Center wrapper */
+    /* Wrapper */
     .wrapper {
       display: flex;
       flex-direction: column;
@@ -34,6 +34,7 @@
       font-size: 14px;
     }
 
+    /* Resume */
     .resume {
       width: 750px;
       display: grid;
@@ -41,6 +42,16 @@
       background: #fff;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 25px;
+
+      /* ✅ scaling for mobile */
+      transform: scale(0.85);
+      transform-origin: top center;
+    }
+
+    @media (min-width: 900px) {
+      .resume {
+        transform: scale(1);
+      }
     }
 
     /* Left Column */
@@ -49,7 +60,7 @@
       color: #fff;
       padding: 30px;
       text-align: center;
-      border-radius: 20px;
+      border-radius: 20px 0 0 20px;
     }
     .left img {
       width: 140px;
@@ -139,24 +150,13 @@
       word-break: break-word;
       white-space: normal;
     }
+
     .contact span,
     .summary,
     .section li {
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: normal;
-    }
-
-    /* ✅ Force desktop-like scaling on mobile */
-    .resume {
-      transform: scale(0.85);
-      transform-origin: top center;
-    }
-
-    @media (min-width: 900px) {
-      .resume {
-        transform: scale(1);
-      }
     }
   </style>
 </head>
@@ -293,13 +293,11 @@ function populateResume() {
     document.getElementById('profileSection').style.display = "none";
   }
 
-  // Left sections
+  // Sections
   fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
   fillList('interestsDisplay', formatList(params.get('interests')), 'interestsSection');
   fillList('languagesDisplay', formatList(params.get('languages')), 'languagesSection');
   fillList('achievementsDisplay', formatList(params.get('achievements')), 'achievementsSection');
-
-  // Right sections
   fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
   fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
   fillList('projectsDisplay', formatPairs(params.get('projects')), 'projectsSection');
@@ -311,7 +309,7 @@ window.onload = populateResume;
 function downloadPDF() {
   const params = new URLSearchParams(window.location.search);
   const pdfSize = params.get('pdfSize') || 'a4';
-  const element = document.querySelector('.resume');
+  const element = document.querySelector('.resume-container, .resume');
   if (!element) {
     alert("Resume content not found!");
     return;
