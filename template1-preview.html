@@ -118,77 +118,7 @@
 
     /* Existing styles remain same */
 
-/* ✅ Responsive Adjustments */
-@media (max-width: 768px) {
-  .resume-container {
-    width: 100%;
-    padding: 15px;
-  }
 
-  .profile-section {
-    position: static;         /* remove absolute positioning */
-    flex-direction: column;   /* stack vertically */
-    align-items: center;
-    gap: 15px;
-    margin-top: -60px;        /* lift photo a bit */
-    text-align: center;
-  }
-
-  .profile-photo {
-    width: 120px;
-    height: 130px;
-  }
-
-  .name {
-    font-size: 22px;
-    letter-spacing: 1px;
-  }
-
-  .title {
-    font-size: 14px;
-    margin-bottom: 15px;
-  }
-
-  .content {
-    display: block;          /* stack columns */
-    padding: 20px;
-  }
-
-  .left-column,
-  .right-column {
-    margin-left: 0;          /* reset negative margins */
-    margin-right: 0;
-  }
-
-  .section h3 {
-    font-size: 14px;
-  }
-
-  .about-text,
-  .contact-item,
-  ul.styled-list li {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-photo {
-    width: 100px;
-    height: 110px;
-  }
-
-  .name {
-    font-size: 20px;
-  }
-
-  .title {
-    font-size: 13px;
-  }
-
-  .content {
-    padding: 15px;
-  }
-}
 
   </style>
 </head>
@@ -386,5 +316,6 @@ function downloadPDF() {
 
 </body>
 </html>
+
 
 
