@@ -2,53 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=1024, initial-scale=0.6, maximum-scale=3.0, user-scalable=yes">
+  <!-- ✅ Force scaling like PDF preview -->
+  <meta name="viewport" content="width=1024, initial-scale=0.6, maximum-scale=3.0, user-scalable=yes">
   <title>Template 6 Resume</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: 'Lato', sans-serif;
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
       padding: 0;
+      overflow: auto; /* allow scroll if needed */
       background: #f5f5f5;
-    }
-
-    /* Wrapper */
-    .wrapper {
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
     }
 
-    .download-btn {
-      margin: 20px auto;
-      padding: 10px 20px;
-      background: #f989ba;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    /* Resume */
     .resume {
-      width: 750px;
+      width: 750px;            /* fixed width like desktop */
+      max-width: 750px;
       background: #fff;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 40px;
-
-      /* ✅ scaling for mobile */
-      transform: scale(0.85);
-      transform-origin: top center;
+      transform-origin: top left; /* enable scaling */
     }
 
-    @media (min-width: 900px) {
+    /* ✅ Auto shrink on small screens */
+    @media (max-width: 1024px) {
       .resume {
-        transform: scale(1);
+        transform: scale(0.8);
+        width: 125%; /* prevent cutting */
       }
     }
 
@@ -87,18 +72,15 @@
       text-align: center;
     }
 
-    /* Columns */
+    /* Grid Layout */
     .container {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
       gap: 60px;
       padding: 30px;
     }
-    .container > div {
-      min-width: 0;
-    }
+    .container > div { min-width: 0; }
 
-    /* Sections */
     .section {
       margin-bottom: 25px;
       margin-left: 10px;
@@ -135,16 +117,9 @@
       font-weight: bold;
     }
 
-    /* ✅ Prevent text overflow */
+    /* ✅ Wrapping fixes */
     .left, .right {
       min-width: 0;
-      overflow-wrap: break-word;
-      word-break: break-word;
-      white-space: normal;
-    }
-    .contact span,
-    .summary,
-    .section li {
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: normal;
@@ -156,26 +131,22 @@
       overflow-wrap: anywhere;
       word-break: break-word;
       hyphens: auto;
-    }
-    .header-info p i,
-    .section h2 i {
-      flex: 0 0 auto;
-    }
-    .section p,
-    .section li,
-    .section div,
-    #summaryDisplay {
       line-height: 1.6 !important;
       margin-bottom: 6px !important;
       display: block !important;
       white-space: normal !important;
-      overflow-wrap: break-word !important;
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <button onclick="downloadPDF()" class="download-btn">Download PDF</button>
+  <div style="display:flex; flex-direction:column; align-items:center;">
+    <button onclick="downloadPDF()" 
+        style="margin:20px auto;display:block;
+               padding:10px 20px;background:#f989ba;
+               color:#fff;border:none;border-radius:8px;
+               cursor:pointer;font-size:14px;">
+      Download PDF
+    </button>
 
     <div class="resume">
       <!-- Header -->
@@ -191,9 +162,9 @@
         </div>
       </div>
 
-      <!-- Content -->
+      <!-- Main Content -->
       <div class="container">
-        <!-- Left -->
+        <!-- Left Column -->
         <div>
           <div class="section" id="summarySection">
             <h2><i class="fas fa-user"></i> Summary</h2>
@@ -213,7 +184,7 @@
           </div>
         </div>
 
-        <!-- Right -->
+        <!-- Right Column -->
         <div>
           <div class="section" id="otherSkillsSection">
             <h2><i class="fas fa-cogs"></i> Skills</h2>
@@ -245,85 +216,61 @@
   </div>
 
 <script>
-  function populateResume() {
-    const params = new URLSearchParams(window.location.search);
-    const setText = (id, val) => { if (val) document.getElementById(id).textContent = val; };
+function populateResume() {
+  const params = new URLSearchParams(window.location.search);
+  const setText = (id, val) => { if (val) document.getElementById(id).textContent = val; };
 
-    const formatList = (text) => {
-      if (!text) return [];
-      return text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => `<li>${line}</li>`);
-    };
+  const formatList = (text) => !text ? [] : text.split(/\n/).map(l => l.trim()).filter(Boolean).map(l => `<li>${l}</li>`);
+  const formatPairs = (text) => !text ? [] : text.split(/\n/).map(l => l.trim()).filter(Boolean).map(l => {
+    const parts = l.split("-");
+    return parts.length > 1 ? `<li><strong>${parts[0].trim()}</strong> – ${parts.slice(1).join("-").trim()}</li>` : `<li>${l}</li>`;
+  });
+  const fillList = (id, data, sectionId) => {
+    if (data.length) document.getElementById(id).innerHTML = data.join('');
+    else document.getElementById(sectionId).style.display = "none";
+  };
 
-    const formatPairs = (text) => {
-      if (!text) return [];
-      return text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
-        const parts = line.split("-");
-        if (parts.length > 1) {
-          return `<li><strong>${parts[0].trim()}</strong> – ${parts.slice(1).join("-").trim()}</li>`;
-        } else {
-          return `<li>${line}</li>`;
-        }
-      });
-    };
+  let photo = sessionStorage.getItem("resumePhoto"); 
+  if (photo) document.getElementById("profilePhoto").src = photo;
 
-    const fillList = (id, data, sectionId) => {
-      if (data.length) {
-        document.getElementById(id).innerHTML = data.join('');
-      } else {
-        document.getElementById(sectionId).style.display = "none";
-      }
-    };
+  setText('displayName', params.get('fullName'));
+  if (params.get('phone')) setText('phoneDisplay', params.get('phone')); else document.getElementById('phoneItem').style.display = "none";
+  if (params.get('email')) setText('emailDisplay', params.get('email')); else document.getElementById('emailItem').style.display = "none";
+  if (params.get('portfolio')) setText('portfolioDisplay', params.get('portfolio')); else document.getElementById('portfolioItem').style.display = "none";
+  if (params.get('linkedin')) setText('linkedinDisplay', params.get('linkedin')); else document.getElementById('linkedinItem').style.display = "none";
+  if (params.get('github')) setText('githubDisplay', params.get('github')); else document.getElementById('githubItem').style.display = "none";
 
-    let photo = sessionStorage.getItem("resumePhoto"); 
-    if (photo) document.getElementById("profilePhoto").src = photo;
+  const summary = params.get('summary');
+  if (summary) document.getElementById('summaryDisplay').innerHTML = summary.replace(/\n/g, "<br>");
+  else document.getElementById('summarySection').style.display = "none";
 
-    setText('displayName', params.get('fullName'));
-    if (params.get('phone')) setText('phoneDisplay', params.get('phone')); else document.getElementById('phoneItem').style.display = "none";
-    if (params.get('email')) setText('emailDisplay', params.get('email')); else document.getElementById('emailItem').style.display = "none";
-    if (params.get('portfolio')) setText('portfolioDisplay', params.get('portfolio')); else document.getElementById('portfolioItem').style.display = "none";
-    if (params.get('linkedin')) setText('linkedinDisplay', params.get('linkedin')); else document.getElementById('linkedinItem').style.display = "none";
-    if (params.get('github')) setText('githubDisplay', params.get('github')); else document.getElementById('githubItem').style.display = "none";
+  fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
+  fillList('otherSkillsDisplay', formatList(params.get('otherSkills')), 'otherSkillsSection');
+  fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
+  fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
+  fillList('projectsDisplay', formatPairs(params.get('projects')), 'projectsSection');
+  fillList('certificationsDisplay', formatList(params.get('certifications')), 'certificationsSection');
+  fillList('achievementsDisplay', formatList(params.get('achievements')), 'achievementsSection');
+  fillList('languagesDisplay', formatList(params.get('languages')), 'languagesSection');
+  fillList('interestsDisplay', formatList(params.get('interests')), 'interestsSection');
+}
+window.onload = populateResume;
 
-    const summary = params.get('summary');
-    if (summary) {
-      document.getElementById('summaryDisplay').innerHTML = summary.replace(/\n/g, "<br>");
-    } else {
-      document.getElementById('summarySection').style.display = "none";
-    }
-
-    fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
-    fillList('otherSkillsDisplay', formatList(params.get('otherSkills')), 'otherSkillsSection');
-    fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
-    fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
-    fillList('projectsDisplay', formatPairs(params.get('projects')), 'projectsSection');
-    fillList('certificationsDisplay', formatList(params.get('certifications')), 'certificationsSection');
-    fillList('achievementsDisplay', formatList(params.get('achievements')), 'achievementsSection');
-    fillList('languagesDisplay', formatList(params.get('languages')), 'languagesSection');
-    fillList('interestsDisplay', formatList(params.get('interests')), 'interestsSection');
-  }
-
-  window.onload = populateResume;
-
-  function downloadPDF() {
-    const params = new URLSearchParams(window.location.search);
-    const pdfSize = params.get('pdfSize') || 'a4';
-    const element = document.querySelector('.resume-container, .resume');
-    if (!element) {
-      alert("Resume content not found!");
-      return;
-    }
-    const opt = {
-      margin: 0,
-      filename: 'resume.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
-      jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-  }
+function downloadPDF() {
+  const params = new URLSearchParams(window.location.search);
+  const pdfSize = params.get('pdfSize') || 'a4';
+  const element = document.querySelector('.resume');
+  if (!element) { alert("Resume content not found!"); return; }
+  const opt = {
+    margin: 0,
+    filename: 'resume.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
+    jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
-
