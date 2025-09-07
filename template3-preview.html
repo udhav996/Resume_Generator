@@ -124,6 +124,45 @@ h1, h2, h3 {
   white-space: normal;
 }
 
+    /* ✅ Keep same design on mobile but fix overflow */
+.resume {
+  max-width: 100%;   /* don’t exceed viewport */
+  width: 800px;      /* laptop default */
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-wrap: nowrap; /* keep two columns */
+  gap: 20px;
+  min-width: 0;
+}
+
+.left, .right {
+  flex: 1 1 0;
+  min-width: 0;              /* allow shrinking */
+  overflow-wrap: break-word; /* wrap long words */
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Ensure contact info or long URLs wrap */
+.contact span,
+.section li,
+.summary {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* Make sure photo scales slightly on very small screens */
+@media (max-width: 480px) {
+  .header img {
+    width: 120px;
+    height: 150px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -329,4 +368,5 @@ if (photo) {
 </body>
 
 </html>
+
 
