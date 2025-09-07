@@ -312,34 +312,33 @@
   const inputs = document.querySelectorAll("input, textarea, select");
   let template = "template1-preview.html"; 
 
-  // ✅ Always open tab first (mobile-safe)
+  // ✅ Open tab immediately (prevents mobile popup blocking)
   let newWindow = window.open("about:blank", "_blank");  
 
-  let photoHandled = false;
+  let fileInput = null;
 
   inputs.forEach(input => {
     if (input.id === "templateSelect") {
       template = input.value;
     } 
     else if (input.type === "file" && input.files[0]) {
-      // ✅ If photo uploaded, read it and set URL later
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        params.set("photo", e.target.result);
-
-        // ✅ Once photo is ready, update the new tab
-        newWindow.location.href = template + "?" + params.toString();
-      };
-      reader.readAsDataURL(input.files[0]);
-      photoHandled = true;
+      fileInput = input; // store file input to handle later
     } 
     else if (input.value.trim() !== "") {
       params.set(input.id, input.value.trim());
     }
   });
 
-  // ✅ If no photo uploaded, load immediately
-  if (!photoHandled) {
+  if (fileInput) {
+    // ✅ Handle photo asynchronously
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      params.set("photo", e.target.result);
+      newWindow.location.href = template + "?" + params.toString();
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    // ✅ No photo case → load immediately
     newWindow.location.href = template + "?" + params.toString();
   }
 }
