@@ -307,119 +307,43 @@
   </div>
 
  <script>
- <script>
-/** Optional helper: resize image (canvas) -> returns dataURL */
-function resizeImageFileToDataURL(file, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("Failed to read file"));
-    reader.onload = () => {
-      const img = new Image();
-      img.onerror = () => reject(new Error("Invalid image"));
-      img.onload = () => {
-        let { width, height } = img;
-        // maintain aspect ratio
-        if (width > maxWidth || height > maxHeight) {
-          const ratio = Math.min(maxWidth / width, maxHeight / height);
-          width = Math.round(width * ratio);
-          height = Math.round(height * ratio);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve(dataUrl);
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function previewResume() {
+  function previewResume() {
   const params = new URLSearchParams();
   const inputs = document.querySelectorAll("input, textarea, select");
-  let template = "template1-preview.html"; // default template
+  let template = "template1-preview.html"; 
 
-  // 1) Open blank tab synchronously (prevents mobile popup blocking)
-  const newWin = window.open("", "_blank");
-  if (!newWin) {
-    alert("Please allow popups for this site in your browser.");
-    return;
-  }
-  newWin.document.write("<p style='font-family:Arial,sans-serif;padding:20px'>Opening preview…</p>");
+  // ✅ Open the new tab immediately (not blocked on mobile)
+  let newWindow = window.open("", "_blank");  
 
-  // 2) Collect all form values (exclude file for now)
-  let fileInput = null;
+  let fileHandled = false;
+
   inputs.forEach(input => {
-    if (input.id === "templateSelect") template = input.value || template;
-    else if (input.type === "file") fileInput = input;
-    else if (input.value && input.value.trim() !== "") params.set(input.id, input.value.trim());
+    if (input.id === "templateSelect") {
+      template = input.value;
+    } 
+    else if (input.type === "file" && input.files[0]) {
+      // ✅ Handle photo separately with FileReader
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        params.set("photo", e.target.result);
+        // ✅ After photo is ready, update the already opened tab
+        newWindow.location.href = template + "?" + params.toString();
+      };
+      reader.readAsDataURL(input.files[0]);
+      fileHandled = true;
+    } 
+    else if (input.value.trim() !== "") {
+      params.set(input.id, input.value.trim());
+    }
   });
 
-  // Always include pdfSize if present
-  const pdfEl = document.getElementById('pdfSize');
-  if (pdfEl && pdfEl.value) params.set('pdfSize', pdfEl.value);
-
-  // Navigation helper
-  const navigate = (searchParams) => {
-    newWin.location.href = template + "?" + searchParams.toString();
-  };
-
-  // 3) If user uploaded a file, read (and optionally resize) then store in localStorage
-  if (fileInput && fileInput.files && fileInput.files[0]) {
-    const file = fileInput.files[0];
-
-    try {
-      // OPTIONAL: resize to reduce size and chance of localStorage quota problems
-      const MAX_BYTES_WARNING = 2.5 * 1024 * 1024; // 2.5MB threshold
-      let dataUrl;
-      if (file.size > MAX_BYTES_WARNING) {
-        // resize (will compress as jpeg)
-        dataUrl = await resizeImageFileToDataURL(file, 1200, 1200, 0.8);
-      } else {
-        // small file — convert to dataURL directly
-        dataUrl = await new Promise((res, rej) => {
-          const r = new FileReader();
-          r.onload = () => res(r.result);
-          r.onerror = () => rej(new Error("Failed to read file"));
-          r.readAsDataURL(file);
-        });
-      }
-
-      // Save to localStorage (use try/catch for quota issues)
-      const key = 'resume_photo_preview_' + Date.now();
-      try {
-        localStorage.setItem(key, dataUrl);
-        params.set('photoKey', key);
-      } catch (e) {
-        console.warn("localStorage set failed. Trying without photo.", e);
-        // if storing fails, navigate without photo (fallback)
-        // optionally show a message to the user
-      }
-
-      navigate(params);
-      return;
-    } catch (err) {
-      console.error("Error handling image:", err);
-      // fallback => navigate without photo
-      navigate(params);
-      return;
-    }
+  // ✅ If no photo upload, load directly
+  if (!fileHandled) {
+    newWindow.location.href = template + "?" + params.toString();
   }
-
-  // 4) No file chosen — just navigate
-  navigate(params);
 }
-</script>
-
 
 </script>
 
 </body>
 </html>
-
-
-
