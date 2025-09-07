@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Preview</title>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #f5c2c7 0%, #e8a2aa 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .resume-container {
+      max-width: 750px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+    }
+    .header {
+      background: linear-gradient(135deg, #d4a574 0%, #c99660 100%);
+      height: 200px;
+      position: relative;
+    }
+    .profile-section {
+      position: absolute;
+      top: 120px;
+      left: 120px;
+      display: flex;
+      align-items: flex-end;
+      gap: 30px;
+    }
+    .profile-photo {
+      width: 160px;
+      height: 180px;
+      border-radius: 50%;
+      border: 6px solid white;
+      object-fit: cover;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      background: #f1f1f1;
+    }
+    .name-title { margin-bottom: 20px; }
+    .name {
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+    .title {
+      font-size: 18px;
+      color: #777;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+    .content {
+      display: grid;
+      padding: 120px 80px 50px 110px;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      justify-content: center;
+    }
+    .right-column {
+      margin-left: -20px;
+    }
+
+    .left-column { margin-left: -80px; }
+    .left-column, .right-column { color: #555; }
+    .section { margin-bottom: 35px; }
+    .section h3 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      color: #333;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      gap: 8px;
+    }
+    .about-text { font-size: 13px; text-align: justify; color: #666; line-height: 1.7; }
+
+    /* ✅ Styled bullet lists */
+    ul.styled-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.styled-list li {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+      position: relative;
+      padding-left: 18px;
+    }
+    ul.styled-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #d4a574;
+      font-weight: bold;
+    }
+    
+  </style>
+</head>
+<body>
+
+<button onclick="downloadPDF()" 
+        style="margin:20px auto;display:block;
+               padding:10px 20px;background:#d4a574;
+               color:#fff;border:none;border-radius:8px;
+               cursor:pointer;font-size:14px;">
+  Download PDF
+</button>
+
+<div class="resume-container">
+  <div class="header"></div>
+
+  <div class="profile-section">
+    <img id="profilePhoto" class="profile-photo" alt="Profile Photo">
+    <div class="name-title">
+      <div class="name" id="displayName">YOUR NAME</div>
+      <div class="title" id="displayTitle">Your Title</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
+      <div class="section" id="contactSection">
+        <div class="contact-item" id="phoneDisplay"><i class="fas fa-phone" style="color:#d4a574;"></i><span></span></div>
+        <div class="contact-item" id="emailDisplay"><i class="fas fa-envelope" style="color:#d4a574;"></i><span></span></div>
+        <div class="contact-item" id="websiteDisplay" style="display:none;"><i class="fas fa-globe" style="color:#d4a574;"></i><span></span></div>
+        <div class="contact-item" id="linkedinDisplay" style="display:none;"><i class="fab fa-linkedin" style="color:#0a66c2;"></i><span></span></div>
+        <div class="contact-item" id="githubDisplay" style="display:none;"><i class="fab fa-github" style="color:#333;"></i><span></span></div>
+      </div>
+
+      <div class="section" id="aboutSection">
+        <h3><i class="fas fa-user"></i> About Me</h3>
+        <div class="about-text" id="summaryDisplay"></div>
+      </div>
+
+      <div class="section" id="educationSection">
+        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+        <ul class="styled-list" id="educationDisplay"></ul>
+      </div>
+
+      <div class="section" id="skillsSection">
+        <h3><i class="fas fa-tools"></i> Expertise</h3>
+        <ul class="styled-list" id="skillsDisplay"></ul>
+      </div>
+
+      <div class="section" id="languagesSection">
+        <h3><i class="fas fa-language"></i> Languages</h3>
+        <ul class="styled-list" id="languagesDisplay"></ul>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-column">
+      <div class="section" id="projectsSection">
+        <h3><i class="fas fa-code"></i> Projects</h3>
+        <ul class="styled-list" id="projectsDisplay"></ul>
+      </div>
+
+      <div class="section" id="certificationsSection">
+        <h3><i class="fas fa-certificate"></i> Certifications</h3>
+        <ul class="styled-list" id="certificationsDisplay"></ul>
+      </div>
+
+      <div class="section" id="achievementsSection">
+        <h3><i class="fas fa-trophy"></i> Achievements</h3>
+        <ul class="styled-list" id="achievementsDisplay"></ul>
+      </div>
+
+      <div class="section" id="interestsSection">
+        <h3><i class="fas fa-heart"></i> Interests</h3>
+        <ul class="styled-list" id="interestsDisplay"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function populateResume() {
+  const params = new URLSearchParams(window.location.search);
+
+  // helper: convert text with newlines/commas into bullet list
+  const makeList = (text) => {
+    if (!text) return "";
+    return text.split(/[\n]+/).map(item => item.trim()).filter(Boolean).map(item => `<li>${item}</li>`).join('');
+  };
+
+  // helper: for pairs (first part bold)
+  const makePairs = (text) => {
+    if (!text) return "";
+    return text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
+      const parts = line.split("-");
+      if (parts.length > 1) {
+        return `<li><strong>${parts[0].trim()}</strong> – ${parts.slice(1).join("-").trim()}</li>`;
+      } else {
+        return `<li>${line}</li>`;
+      }
+    }).join('');
+  };
+
+  // Photo
+  const photo = params.get('photo');
+  if (photo) document.getElementById('profilePhoto').src = photo;
+
+  // Name & Title
+  if (params.get('fullName')) document.getElementById('displayName').textContent = params.get('fullName').toUpperCase();
+  if (params.get('jobRole')) document.getElementById('displayTitle').textContent = params.get('jobRole');
+
+  // Contact
+  const setContact = (id, val) => {
+    if (val) {
+      const el = document.getElementById(id);
+      el.querySelector("span").textContent = val;
+      el.style.display = "flex";
+    } else {
+      document.getElementById(id).style.display = "none";
+    }
+  };
+  setContact("phoneDisplay", params.get("phone"));
+  setContact("emailDisplay", params.get("email"));
+  setContact("websiteDisplay", params.get("portfolio"));
+  setContact("linkedinDisplay", params.get("linkedin"));
+  setContact("githubDisplay", params.get("github"));
+
+  // Summary (About Me) – keep line breaks but no bullets
+  if (params.get('summary')) {
+    const summaryText = params.get('summary').replace(/\n/g, "<br>");
+    document.getElementById('summaryDisplay').innerHTML = summaryText;
+  } else {
+    document.getElementById('aboutSection').style.display = "none";
+  }
+
+  // Education (multi-line, first part bold)
+  if (params.get('education')) {
+    document.getElementById('educationDisplay').innerHTML = makePairs(params.get('education'));
+  } else {
+    document.getElementById('educationSection').style.display = "none";
+  }
+
+  // Skills
+  if (params.get('skills')) document.getElementById('skillsDisplay').innerHTML = makeList(params.get('skills'));
+  else document.getElementById('skillsSection').style.display = "none";
+
+  // Languages
+  if (params.get('languages')) document.getElementById('languagesDisplay').innerHTML = makeList(params.get('languages'));
+  else document.getElementById('languagesSection').style.display = "none";
+
+  // Projects (multi-line, first part bold)
+  if (params.get('projects')) {
+    document.getElementById('projectsDisplay').innerHTML = makePairs(params.get('projects'));
+  } else {
+    document.getElementById('projectsSection').style.display = "none";
+  }
+
+  // Certifications
+  if (params.get('certifications')) document.getElementById('certificationsDisplay').innerHTML = makeList(params.get('certifications'));
+  else document.getElementById('certificationsSection').style.display = "none";
+
+  // Achievements
+  if (params.get('achievements')) document.getElementById('achievementsDisplay').innerHTML = makeList(params.get('achievements'));
+  else document.getElementById('achievementsSection').style.display = "none";
+
+  // Interests
+  if (params.get('interests')) document.getElementById('interestsDisplay').innerHTML = makeList(params.get('interests'));
+  else document.getElementById('interestsSection').style.display = "none";
+}
+
+window.onload = populateResume;
+
+function downloadPDF() {
+  const params = new URLSearchParams(window.location.search);
+  const pdfSize = params.get('pdfSize') || 'a4'; // default to A4
+
+  const element = document.querySelector('.resume-container');
+  const opt = {
+    margin: 0,
+    filename: 'resume.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
+    jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+</body>
+</html>

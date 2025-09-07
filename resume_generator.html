@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Input Form</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f989ba, #8cabe8);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 10px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      text-align: center;
+      color: #fff;
+      font-size: 26px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 25px 0 15px;
+      color: #fff;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      padding-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Contact - Two Columns */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+      text-align: center;
+    }
+
+    /* Single Column for others */
+    .single-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .image-upload {
+      grid-column: span 2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .image-upload input[type="file"] {
+      width: 220px;
+      text-align: center;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.9);
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    .input-group textarea {
+      resize: none;
+      min-height: 80px;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: #777;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label,
+    .input-group textarea:focus + label,
+    .input-group textarea:not(:placeholder-shown) + label,
+    .input-group select:focus + label,
+    .input-group select:not([value=""]) + label {
+      top: -8px;
+      left: 10px;
+      background: #fff;
+      font-size: 11px;
+      color: #f989ba;
+      padding: 0 6px;
+      border-radius: 5px;
+    }
+
+    /* Preview Button */
+    .preview-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #f989ba, #8cabe8);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .preview-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #8cabe8, #f989ba);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2><i class="fas fa-file-alt"></i> Resume Builder</h2>
+
+    <!-- Contact Section (Two Columns) -->
+    <div class="section-title"><i class="fas fa-address-book"></i> Contact Information</div>
+    <div class="contact-grid">
+      <!-- Photo Upload -->
+      <div class="image-upload">
+        <div class="input-group">
+          <input type="file" id="photo" accept="image/*">
+          <label for="photo">Upload Photo</label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="fullName" placeholder=" " required>
+        <label for="fullName">Full Name</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="jobRole" placeholder=" ">
+        <label for="jobRole">Job Role</label>
+      </div>
+      <div class="input-group">
+        <input type="email" id="email" placeholder=" ">
+        <label for="email">Email</label>
+      </div>
+      <div class="input-group">
+        <input type="tel" id="phone" placeholder=" ">
+        <label for="phone">Phone</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="portfolio" placeholder=" ">
+        <label for="portfolio">Portfolio</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="linkedin" placeholder=" ">
+        <label for="linkedin">LinkedIn</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="github" placeholder=" ">
+        <label for="github">GitHub</label>
+      </div>
+    </div>
+
+    <!-- Other Sections (Single Column) -->
+    <div class="section-title"><i class="fas fa-user"></i> Summary</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="summary" placeholder=" "></textarea>
+        <label for="summary">Summary</label>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="section-title"><i class="fas fa-graduation-cap"></i> Education</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="education" placeholder=" "></textarea>
+        <label for="education">Enter education (each line: Degree - Institution)</label>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="section-title"><i class="fas fa-briefcase"></i> Experience</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="experience" placeholder=" "></textarea>
+        <label for="experience">Enter experience (each line: Job Title - Company - Years)</label>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section-title"><i class="fas fa-tasks"></i> Projects</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="projects" placeholder=" "></textarea>
+        <label for="projects">Enter projects (each line: Title - Tech/Tools)</label>
+      </div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="section-title"><i class="fas fa-certificate"></i> Certifications</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="certifications" placeholder=" "></textarea>
+        <label for="certifications">Certifications (newline separated)</label>
+      </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="section-title"><i class="fas fa-award"></i> Achievements</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="achievements" placeholder=" "></textarea>
+        <label for="achievements">Achievements (newline separated)</label>
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="section-title"><i class="fas fa-language"></i> Languages</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="languages" placeholder=" "></textarea>
+        <label for="languages">Languages (newline separated)</label>
+      </div>
+    </div>
+
+    <!-- Interests -->
+    <div class="section-title"><i class="fas fa-heart"></i> Interests</div>
+    <div class="single-column">
+      <div class="input-group">
+        <textarea id="interests" placeholder=" "></textarea>
+        <label for="interests">Interests (newline separated)</label>
+      </div>
+    </div>
+
+    <!-- Template Selection -->
+    <div class="section-title"><i class="fas fa-palette"></i> Choose Template</div>
+    <div class="single-column">
+      <div class="input-group">
+        <select id="templateSelect">
+          <option value="template1-preview.html">Yellow Professional 1</option>
+          <option value="template2-preview.html">Iconic White Black 2</option>
+          <option value="template3-preview.html">Classic Skyblue 3</option>
+          <option value="template4-preview.html">White plain Mode Pro 4</option>
+          <option value="template5-preview.html">Bold & Modern 5</option>
+          <option value="template6-preview.html">Pink Pop 6</option>
+        </select>
+        <label for="templateSelect">Select Template</label>
+      </div>
+    </div>
+
+    <!-- PDF Size -->
+    <div class="form-group">
+      <label for="pdfSize" style="color:#fff; font-weight:600;">Select PDF Size</label>
+      <select id="pdfSize" name="pdfSize" required>
+        <option value="a4" selected>A4 (Standard in India/Europe)</option>
+        <option value="letter">Letter (US/Canada)</option>
+        <option value="legal">Legal (Long Format)</option>
+      </select>
+    </div>
+
+    <!-- Preview Button -->
+    <button type="button" class="preview-btn" onclick="previewResume()">
+      <i class="fas fa-eye"></i> Preview Resume
+    </button>
+  </div>
+
+ <script>
+  function previewResume() {
+    const params = new URLSearchParams();
+    const inputs = document.querySelectorAll("input, textarea, select");
+    let template = "template1-preview.html"; 
+    let fileHandled = false;
+
+    inputs.forEach(input => {
+      if (input.id === "templateSelect") {
+        template = input.value;
+      } else if (input.type === "file" && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          params.set("photo", e.target.result);
+          const pdfSize = document.getElementById('pdfSize').value;
+          params.set("pdfSize", pdfSize);
+          window.open(template + "?" + params.toString(), "_blank");
+        };
+        reader.readAsDataURL(input.files[0]);
+        fileHandled = true;
+      } else if (input.value.trim() !== "") {
+        params.set(input.id, input.value.trim());
+      }
+    });
+
+    if (!fileHandled) {
+      const pdfSize = document.getElementById('pdfSize').value;
+      params.set("pdfSize", pdfSize);
+      window.open(template + "?" + params.toString(), "_blank");
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template 4 Resume</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lora', serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+    }
+    
+    h1, h2, h3 {
+     font-family: 'Montserrat', sans-serif;
+   }
+
+
+    .resume {
+      width: 750px;
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 20px;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 60px;
+      margin-bottom: 20px;
+      position: relative;
+      text-align: center;
+    }
+
+    /* Photo at top-right */
+    .header img {
+      width: 120px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      top: -20px;
+      right: 0;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .header h3 {
+      margin: 5px 0 0;
+      color: #555;
+      font-weight: 400;
+      font-size: 18px;
+    }
+
+    /* Contact */
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 14px;
+      margin: 20px 0;
+      justify-content: center;
+    }
+    .contact div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact i {
+      color: #444;
+    }
+
+    /* Layout */
+    .grid {
+  display: grid;
+  grid-template-columns: 50% 50%;  /* Left 35%, Right 65% */
+  gap: 20px;                        /* add spacing between columns */
+  border-top: 2px solid #ddd;
+  padding-top: 20px;
+}
+
+
+    .section {
+      margin-bottom: 25px;
+      padding-left: 0px;
+    }
+    .section h2 {
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 6px;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #222;
+      padding: 10px;
+    }
+    .section h2 i {
+      color: #444;
+    }
+    .section ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+    .section li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    /* ✅ Prevent long text from breaking resume width */
+.grid > div {
+  min-width: 0;              /* allow grid columns to shrink */
+}
+
+.section,
+.section li,
+.contact span,
+#summaryDisplay {
+  overflow-wrap: break-word; /* modern browsers */
+  word-break: break-word;    /* legacy fallback */
+  white-space: normal;       /* wrap text properly */
+}
+
+  </style>
+</head>
+<body>
+  <div style="display:flex; flex-direction:column; align-items:center;">
+    <button onclick="downloadPDF()" 
+        style="margin:20px auto;display:block;
+               padding:10px 20px;background:#8cabe8;
+               color:#fff;border:none;border-radius:8px;
+               cursor:pointer;font-size:14px;">
+      Download PDF
+    </button>
+
+  <div class="resume">
+    <!-- Header -->
+    <div class="header" id="headerSection">
+      <img id="profilePhoto" src="" alt="Profile Photo">
+      <h1 id="displayName">Your Name</h1>
+      <h3 id="displayTitle">Job Role / Internship</h3>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact" id="contactSection">
+      <div id="phoneItem"><i class="fas fa-phone"></i><span id="phoneDisplay"></span></div>
+      <div id="emailItem"><i class="fas fa-envelope"></i><span id="emailDisplay"></span></div>
+      <div id="websiteItem"><i class="fas fa-globe"></i><span id="portfolioDisplay"></span></div>
+      <div id="linkedinItem"><i class="fab fa-linkedin"></i><span id="linkedinDisplay"></span></div>
+      <div id="githubItem"><i class="fab fa-github"></i><span id="githubDisplay"></span></div>
+    </div>
+
+    <!-- Grid Sections -->
+    <div class="grid">
+      <!-- Left Column -->
+      <div>
+        <div class="section" id="skillsSection">
+          <h2><i class="fas fa-code"></i> Skills</h2>
+          <ul id="skillsDisplay"></ul>
+        </div>
+        <div class="section" id="educationSection">
+          <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+          <ul id="educationDisplay"></ul>
+        </div>
+        <div class="section" id="interestsSection">
+          <h2><i class="fas fa-heart"></i> Interests</h2>
+          <ul id="interestsDisplay"></ul>
+        </div>
+        <div class="section" id="languagesSection">
+          <h2><i class="fas fa-language"></i> Languages</h2>
+          <ul id="languagesDisplay"></ul>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <div class="section" id="profileSection">
+          <h2><i class="fas fa-user"></i> Profile</h2>
+          <div id="summaryDisplay"></div>
+        </div>
+        <div class="section" id="experienceSection">
+          <h2><i class="fas fa-briefcase"></i> Experience</h2>
+          <ul id="experienceDisplay"></ul>
+        </div>
+        <div class="section" id="projectsSection">
+          <h2><i class="fas fa-tasks"></i> Projects</h2>
+          <ul id="projectsDisplay"></ul>
+        </div>
+        <div class="section" id="certificationsSection">
+          <h2><i class="fas fa-certificate"></i> Certifications</h2>
+          <ul id="certificationsDisplay"></ul>
+        </div>
+        <div class="section" id="achievementsSection">
+          <h2><i class="fas fa-award"></i> Achievements</h2>
+          <ul id="achievementsDisplay"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+<script>
+  function populateResume() {
+    const params = new URLSearchParams(window.location.search);
+
+    const setText = (id, val) => { if (val) document.getElementById(id).textContent = val; };
+
+    // Split into array from newlines/commas
+    // Split into array from newlines/commas → wrap with <li>
+const formatList = (text) => {
+  if (!text) return [];
+  return text
+    .split(/\n/)
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => `<li>${line}</li>`);
+};
+
+
+    // Split into pairs → first part bold, rest normal
+    const formatPairs = (text) => {
+      if (!text) return [];
+      return text.split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
+        const parts = line.split("-");
+        if (parts.length > 1) {
+          return `<li><strong>${parts[0].trim()}</strong> – ${parts.slice(1).join("-").trim()}</li>`;
+        } else {
+          return `<li>${line}</li>`;
+        }
+      });
+    };
+
+    const fillList = (id, data, sectionId) => {
+      if (data.length) {
+        document.getElementById(id).innerHTML = data.join('');
+      } else {
+        document.getElementById(sectionId).style.display = "none";
+      }
+    };
+
+    // Photo
+    const photo = params.get('photo');
+    if (photo) document.getElementById('profilePhoto').src = photo;
+
+    // Name & Title
+    setText('displayName', params.get('fullName'));
+    setText('displayTitle', params.get('jobRole'));
+
+    // Contact
+    const hasContact = params.get('phone') || params.get('email') || params.get('portfolio') || params.get('linkedin') || params.get('github');
+    if (!hasContact) {
+      document.getElementById('contactSection').style.display = "none";
+    } else {
+      if (params.get('phone')) setText('phoneDisplay', params.get('phone')); else document.getElementById('phoneItem').style.display = "none";
+      if (params.get('email')) setText('emailDisplay', params.get('email')); else document.getElementById('emailItem').style.display = "none";
+      if (params.get('portfolio')) setText('portfolioDisplay', params.get('portfolio')); else document.getElementById('websiteItem').style.display = "none";
+      if (params.get('linkedin')) setText('linkedinDisplay', params.get('linkedin')); else document.getElementById('linkedinItem').style.display = "none";
+      if (params.get('github')) setText('githubDisplay', params.get('github')); else document.getElementById('githubItem').style.display = "none";
+    }
+
+    // Profile (Summary) → keep line breaks, no bullets
+    const summary = params.get('summary');
+    if (summary) {
+      document.getElementById('summaryDisplay').innerHTML = summary.replace(/\n/g, "<br>");
+    } else {
+      document.getElementById('profileSection').style.display = "none";
+    }
+
+    // ✅ Education (multi-line, bold first part)
+    fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
+
+    // ✅ Experience (multi-line, bold first part)
+    fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
+
+    // ✅ Skills (simple list)
+    fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
+
+    // ✅ Projects (multi-line, bold first part)
+    fillList('projectsDisplay', formatPairs(params.get('projects')), 'projectsSection');
+
+    // Certifications
+    fillList('certificationsDisplay', formatList(params.get('certifications')), 'certificationsSection');
+
+    // Achievements
+    fillList('achievementsDisplay', formatList(params.get('achievements')), 'achievementsSection');
+
+    // Languages
+    fillList('languagesDisplay', formatList(params.get('languages')), 'languagesSection');
+
+    // Interests
+    fillList('interestsDisplay', formatList(params.get('interests')), 'interestsSection');
+  }
+
+  window.onload = populateResume;
+
+  function downloadPDF() {
+    const params = new URLSearchParams(window.location.search);
+    const pdfSize = params.get('pdfSize') || 'a4'; // default to A4
+
+    // Pick whichever wrapper exists
+    const element = document.querySelector('.resume-container, .resume');
+    if (!element) {
+      alert("Resume content not found!");
+      return;
+    }
+
+    const opt = {
+      margin: 0,
+      filename: 'resume.pdf',
+      image: { type: 'jpeg', quality: 1 },
+      html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
+      jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</body>
+
+</html>

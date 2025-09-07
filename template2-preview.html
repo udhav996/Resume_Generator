@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template 2</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lora', serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .resume-container {
+      max-width: 700px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      background: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      /* PDF-friendly positioning */
+      position: relative;
+    }
+    .left-column {
+      background: #1e2a38;
+      color: #fff;
+      padding: 30px 20px;
+      /* Prevent grid overflow */
+      min-width: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 20px;
+      border: 4px solid #fff;
+    }
+    .name {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      /* Better text wrapping */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+    .title {
+      text-align: center;
+      font-size: 14px;
+      color: #bbb;
+      margin-bottom: 30px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .left-section { 
+      margin-bottom: 25px; 
+      /* Prevent overflow */
+      min-width: 0;
+      word-wrap: break-word;
+    }
+    .left-section h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: #d4a574;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      /* Better text handling */
+      flex-wrap: wrap;
+      word-wrap: break-word;
+    }
+    .contact-item, .list-item {
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start; /* Changed from center to flex-start */
+      gap: 8px;
+      word-break: break-all; /* More aggressive breaking for contact info */
+      line-height: 1.4;
+      /* Prevent horizontal overflow */
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+    
+    .contact-item i,
+    .list-item i {
+      /* Keep icons at top and prevent shrinking */
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: 16px; /* Fixed width for consistency */
+    }
+    
+    .contact-item span,
+    .list-item span {
+      /* Allow text to wrap properly */
+      flex: 1;
+      min-width: 0;
+      word-break: break-all;
+      overflow-wrap: break-word;
+      line-height: 1.4;
+    }
+    
+    .right-column {
+      padding: 30px 40px;
+      margin-top: 20px;
+      /* Prevent overflow */
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+    .right-section { 
+      margin-bottom: 30px;
+      /* Prevent section overflow */
+      min-width: 0;
+      word-wrap: break-word;
+    }
+    .right-section h2 {
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      color: #1e2a38;
+      border-bottom: 2px solid #d4a574;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 3px;
+      /* Better wrapping for long headers */
+      flex-wrap: wrap;
+      word-wrap: break-word;
+    }
+    .desc { 
+      font-size: 13px; 
+      color: #555; 
+      line-height: 1.6;
+      /* Better text flow */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    ul { 
+      margin-left: 18px; 
+      margin-top: 6px;
+      /* Prevent list overflow */
+      min-width: 0;
+      word-wrap: break-word;
+    }
+
+    /* Enhanced list styling for PDF compatibility */
+    ul li {
+      list-style: none;
+      margin-bottom: 8px; /* Increased spacing */
+      font-size: 13px;
+      line-height: 1.6; /* Increased line height */
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start; /* Changed from baseline */
+      gap: 6px; /* Increased gap */
+      /* Better text handling */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      min-width: 0;
+    }
+    
+    .pair-key {
+      font-weight: bold;
+      white-space: nowrap;
+      flex-shrink: 0; /* Prevent shrinking */
+    }
+    .pair-sep {
+      margin: 0 4px;
+      flex-shrink: 0; /* Prevent shrinking */
+    }
+    .pair-val {
+      flex: 1;
+      min-width: 0;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.6;
+    }
+    ul li .bullet {
+      color: #d4a574;
+      font-weight: bold;
+      flex-shrink: 0; /* Prevent bullet from shrinking */
+      margin-top: 2px; /* Align with text */
+    }
+
+    /* Enhanced wrapping for all text elements */
+    .resume-container *,
+    .left-column *,
+    .right-column *,
+    .contact-item *,
+    .list-item *,
+    ul li *,
+    .desc * {
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    /* Special handling for URLs and emails */
+    .contact-item span[id$="Display"] {
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+
+    /* PDF-specific adjustments */
+    @media print {
+      .resume-container {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      
+      .contact-item, .list-item, ul li {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      .left-section, .right-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+   <button onclick="downloadPDF()" 
+        style="margin:20px auto;display:block;
+               padding:10px 20px;background:#333333;
+               color:#fff;border:none;border-radius:8px;
+               cursor:pointer;font-size:14px;">
+  Download PDF
+</button>
+
+  <div class="resume-container">
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
+      <img id="profilePhoto" class="profile-photo" src="" alt="Profile">
+      <div class="name" id="displayName">Your Name</div>
+      <div class="title" id="displayTitle">Your Title</div>
+
+      <div class="left-section" id="contactSection">
+        <h3><i class="fas fa-address-book"></i> Contact</h3>
+        <div class="contact-item" id="phoneItem"><i class="fas fa-phone"></i><span id="phoneDisplay"></span></div>
+        <div class="contact-item" id="emailItem"><i class="fas fa-envelope"></i><span id="emailDisplay"></span></div>
+        <div class="contact-item" id="websiteSection"><i class="fas fa-globe"></i><span id="portfolioDisplay"></span></div>
+        <div class="contact-item" id="linkedinSection"><i class="fab fa-linkedin"></i><span id="linkedinDisplay"></span></div>
+        <div class="contact-item" id="githubSection"><i class="fab fa-github"></i><span id="githubDisplay"></span></div>
+      </div>
+
+      <div class="left-section" id="skillsSection">
+        <h3><i class="fas fa-cogs"></i> Skills</h3>
+        <ul id="skillsDisplay"></ul>
+      </div>
+
+      <div class="left-section" id="languagesSection">
+        <h3><i class="fas fa-language"></i> Languages</h3>
+        <ul id="languagesDisplay"></ul>
+      </div>
+
+      <div class="left-section" id="interestsSection">
+        <h3><i class="fas fa-heart"></i> Hobbies</h3>
+        <ul id="interestsDisplay"></ul>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-column">
+      <div class="right-section" id="summarySection">
+        <h2><i class="fas fa-user"></i> Profile</h2>
+        <div class="desc" id="summaryDisplay"></div>
+      </div>
+
+      <div class="right-section" id="educationSection">
+        <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+        <ul id="educationList"></ul>
+      </div>
+
+      <div class="right-section" id="projectsSection">
+        <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+        <ul id="projectsList"></ul>
+      </div>
+
+      <div class="right-section" id="certificationsSection">
+        <h2><i class="fas fa-certificate"></i> Certifications</h2>
+        <ul id="certificationsDisplay"></ul>
+      </div>
+
+      <div class="right-section" id="achievementsSection">
+        <h2><i class="fas fa-trophy"></i> Achievements</h2>
+        <ul id="achievementsDisplay"></ul>
+      </div>
+    </div>
+  </div>
+
+<script>
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
+
+// Flexible split: handles comma, line break, semicolon
+function setList(id, value, sectionId){
+  if(value){
+    let items = value.split(/[\n]+/).map(v=>v.trim()).filter(v=>v);
+    if(items.length){
+      document.getElementById(id).innerHTML = items
+        .map(v=>"<li><span class='bullet'>&#10003;</span> " + v + "</li>")
+        .join("");
+    } else {
+      if(sectionId) document.getElementById(sectionId).style.display = "none";
+    }
+  } else {
+    if(sectionId) document.getElementById(sectionId).style.display = "none";
+  }
+}
+
+// ✅ helper: for pairs (first part bold + hyphen aligned)
+function setPairs(id, value, sectionId){
+  if(value){
+    let items = value.split(/\n/).map(v=>v.trim()).filter(v=>v);
+    if(items.length){
+      document.getElementById(id).innerHTML = items
+        .map(line=>{
+          const parts = line.split("-");
+          if(parts.length > 1 && parts[0].trim() !== ""){
+            return `<li><span class="pair-key">${parts[0].trim()}</span><span class="pair-sep">—</span><span class="pair-val">${parts.slice(1).join("-").trim()}</span></li>`;
+          } else {
+            // ✌ previously bold, now just normal
+            return `<li><span class="pair-val">${line}</span></li>`;
+          }
+        }).join("");
+    } else {
+      if(sectionId) document.getElementById(sectionId).style.display = "none";
+    }
+  } else {
+    if(sectionId) document.getElementById(sectionId).style.display = "none";
+  }
+}
+
+
+// Photo
+const photoData = getParam("photo");
+if(photoData){ document.getElementById("profilePhoto").src = photoData; }
+
+// Name & Title
+document.getElementById("displayName").textContent = getParam("fullName") || "Your Name";
+document.getElementById("displayTitle").textContent = getParam("jobRole") || "";
+
+// Contact Section
+const hasContact = getParam("phone") || getParam("email") || getParam("portfolio") || getParam("linkedin") || getParam("github");
+if(!hasContact){
+  document.getElementById("contactSection").style.display = "none";
+} else {
+  if(getParam("phone")) document.getElementById("phoneDisplay").textContent = getParam("phone"); else document.getElementById("phoneItem").style.display = "none";
+  if(getParam("email")) document.getElementById("emailDisplay").textContent = getParam("email"); else document.getElementById("emailItem").style.display = "none";
+  if(getParam("portfolio")) document.getElementById("portfolioDisplay").textContent = getParam("portfolio"); else document.getElementById("websiteSection").style.display = "none";
+  if(getParam("linkedin")) document.getElementById("linkedinDisplay").textContent = getParam("linkedin"); else document.getElementById("linkedinSection").style.display = "none";
+  if(getParam("github")) document.getElementById("githubDisplay").textContent = getParam("github"); else document.getElementById("githubSection").style.display = "none";
+}
+
+// Summary (Profile)
+if(getParam("summary")){
+  document.getElementById("summaryDisplay").innerHTML = getParam("summary").replace(/\n/g, "<br>");
+} else {
+  document.getElementById("summarySection").style.display = "none";
+}
+
+// Education (multi-line, first part bold)
+setPairs("educationList", getParam("education"), "educationSection");
+
+// Skills / Languages / Interests / Achievements / Certifications
+setList("skillsDisplay", getParam("skills"), "skillsSection");
+setList("languagesDisplay", getParam("languages"), "languagesSection");
+setList("interestsDisplay", getParam("interests"), "interestsSection");
+setList("achievementsDisplay", getParam("achievements"), "achievementsSection");
+setList("certificationsDisplay", getParam("certifications"), "certificationsSection");
+
+// Projects (multi-line, first part bold)
+setPairs("projectsList", getParam("projects"), "projectsSection");
+
+function downloadPDF() {
+  const params = new URLSearchParams(window.location.search);
+  const pdfSize = params.get('pdfSize') || 'a4'; // default to A4
+
+  const element = document.querySelector('.resume-container');
+  const opt = {
+    margin: 0,
+    filename: 'resume.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { 
+      scale: 2, 
+      scrollX: 0, 
+      scrollY: 0,
+      useCORS: true,
+      allowTaint: true,
+      letterRendering: true,
+      logging: false
+    },
+    jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+</body>
+</html>
