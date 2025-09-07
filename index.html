@@ -308,36 +308,43 @@
 
  <script>
   function previewResume() {
-    const params = new URLSearchParams();
-    const inputs = document.querySelectorAll("input, textarea, select");
-    let template = "template1-preview.html"; 
-    let fileHandled = false;
+  const params = new URLSearchParams();
+  const inputs = document.querySelectorAll("input, textarea, select");
+  let template = "template1-preview.html"; 
 
-    inputs.forEach(input => {
-      if (input.id === "templateSelect") {
-        template = input.value;
-      } else if (input.type === "file" && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          params.set("photo", e.target.result);
-          const pdfSize = document.getElementById('pdfSize').value;
-          params.set("pdfSize", pdfSize);
-          window.open(template + "?" + params.toString(), "_blank");
-        };
-        reader.readAsDataURL(input.files[0]);
-        fileHandled = true;
-      } else if (input.value.trim() !== "") {
-        params.set(input.id, input.value.trim());
-      }
-    });
+  // ✅ Open the new tab immediately (not blocked on mobile)
+  let newWindow = window.open("", "_blank");  
 
-    if (!fileHandled) {
-      const pdfSize = document.getElementById('pdfSize').value;
-      params.set("pdfSize", pdfSize);
-      window.open(template + "?" + params.toString(), "_blank");
+  let fileHandled = false;
+
+  inputs.forEach(input => {
+    if (input.id === "templateSelect") {
+      template = input.value;
+    } 
+    else if (input.type === "file" && input.files[0]) {
+      // ✅ Handle photo separately with FileReader
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        params.set("photo", e.target.result);
+        // ✅ After photo is ready, update the already opened tab
+        newWindow.location.href = template + "?" + params.toString();
+      };
+      reader.readAsDataURL(input.files[0]);
+      fileHandled = true;
+    } 
+    else if (input.value.trim() !== "") {
+      params.set(input.id, input.value.trim());
     }
+  });
+
+  // ✅ If no photo upload, load directly
+  if (!fileHandled) {
+    newWindow.location.href = template + "?" + params.toString();
   }
+}
+
 </script>
 
 </body>
 </html>
+
