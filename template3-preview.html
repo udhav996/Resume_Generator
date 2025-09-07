@@ -244,8 +244,11 @@ h1, h2, h3 {
     };
 
     // Photo
-    const photo = params.get('photo');
-    if (photo) document.getElementById('profilePhoto').src = photo;
+    let photo = sessionStorage.getItem("resumePhoto"); 
+if (photo) {
+  document.getElementById("profilePhoto").src = photo;
+}
+
 
     // Name & Title
     setText('displayName', params.get('fullName'));
@@ -326,3 +329,4 @@ h1, h2, h3 {
 </body>
 
 </html>
+
