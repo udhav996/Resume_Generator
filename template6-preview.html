@@ -277,8 +277,11 @@
     };
 
     // Photo
-    const photo = params.get('photo');
-    if (photo) document.getElementById('profilePhoto').src = photo;
+   let photo = sessionStorage.getItem("resumePhoto"); 
+if (photo) {
+  document.getElementById("profilePhoto").src = photo;
+}
+
 
     // Header Info
     setText('displayName', params.get('fullName'));
@@ -353,3 +356,4 @@
 </body>
 
 </html>
+
