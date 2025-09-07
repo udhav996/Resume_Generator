@@ -121,11 +121,29 @@
       font-weight: bold;
     }
 
- 
+ .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* ✅ centers everything horizontally */
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.download-btn {
+  margin: 20px auto;
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
   </style>
 </head>
 <body>
-
+<div class="wrapper">
 <button onclick="downloadPDF()" 
         style="margin:20px auto;display:block;
                padding:10px 20px;background:#d4a574;
@@ -201,7 +219,7 @@
     </div>
   </div>
 </div>
-
+</div>
 <script>
 function populateResume() {
   const params = new URLSearchParams(window.location.search);
@@ -318,6 +336,7 @@ function downloadPDF() {
 
 </body>
 </html>
+
 
 
 
