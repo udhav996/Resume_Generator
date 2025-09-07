@@ -312,33 +312,36 @@
   const inputs = document.querySelectorAll("input, textarea, select");
   let template = "template1-preview.html"; 
 
-  // ✅ Open the tab immediately (avoids popup block on mobile)
-  let newWindow = window.open("about:blank", "_blank");  
+  // Open preview tab immediately
+  let newWindow = window.open("", "_blank");
+  newWindow.document.write("<p>Loading resume preview...</p>");
 
-  let photoHandled = false;
+  let photoFile = null;
 
   inputs.forEach(input => {
     if (input.id === "templateSelect") {
       template = input.value;
     } 
     else if (input.type === "file" && input.files[0]) {
-      // ✅ Handle photo asynchronously
-      photoHandled = true;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        params.set("photo", e.target.result);
-        // ✅ Once ready, update the new tab with full URL
-        newWindow.location.href = template + "?" + params.toString();
-      };
-      reader.readAsDataURL(input.files[0]);
+      photoFile = input.files[0]; // store photo for later
     } 
     else if (input.value.trim() !== "") {
       params.set(input.id, input.value.trim());
     }
   });
 
-  // ✅ If no photo, update immediately
-  if (!photoHandled) {
+  // If photo exists → read it and embed inline
+  if (photoFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      params.set("photo", e.target.result);
+
+      // Write preview page directly (photo included)
+      newWindow.location.href = template + "?" + params.toString();
+    };
+    reader.readAsDataURL(photoFile);
+  } else {
+    // No photo → load preview immediately
     newWindow.location.href = template + "?" + params.toString();
   }
 }
@@ -348,4 +351,5 @@
 
 </body>
 </html>
+
 
