@@ -307,38 +307,39 @@
   </div>
 
  <script>
-  function previewResume() {
+ function previewResume() {
   const params = new URLSearchParams();
   const inputs = document.querySelectorAll("input, textarea, select");
   let template = "template1-preview.html"; 
 
-  // ✅ Open the new tab immediately (not blocked on mobile)
-  let newWindow = window.open("", "_blank");  
+  // ✅ Always open tab first (mobile-safe)
+  let newWindow = window.open("about:blank", "_blank");  
 
-  let fileHandled = false;
+  let photoHandled = false;
 
   inputs.forEach(input => {
     if (input.id === "templateSelect") {
       template = input.value;
     } 
     else if (input.type === "file" && input.files[0]) {
-      // ✅ Handle photo separately with FileReader
+      // ✅ If photo uploaded, read it and set URL later
       const reader = new FileReader();
       reader.onload = function(e) {
         params.set("photo", e.target.result);
-        // ✅ After photo is ready, update the already opened tab
+
+        // ✅ Once photo is ready, update the new tab
         newWindow.location.href = template + "?" + params.toString();
       };
       reader.readAsDataURL(input.files[0]);
-      fileHandled = true;
+      photoHandled = true;
     } 
     else if (input.value.trim() !== "") {
       params.set(input.id, input.value.trim());
     }
   });
 
-  // ✅ If no photo upload, load directly
-  if (!fileHandled) {
+  // ✅ If no photo uploaded, load immediately
+  if (!photoHandled) {
     newWindow.location.href = template + "?" + params.toString();
   }
 }
@@ -347,4 +348,5 @@
 
 </body>
 </html>
+
 
