@@ -150,26 +150,6 @@
       background: linear-gradient(135deg, #8cabe8, #f989ba);
     }
 
-    .form-group {
-      margin: 15px 0;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .form-group select {
-      width: 100%;
-      padding: 10px 14px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.9);
-      font-size: 14px;
-      outline: none;
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
@@ -326,72 +306,43 @@
     </button>
   </div>
 
-<script>
-// Global variable to store photo data
-let photoData = null;
+ <script>
+  function previewResume() {
+  const params = new URLSearchParams();
+  const inputs = document.querySelectorAll("input, textarea, select");
+  let template = "template1-preview.html"; 
 
-// Listen for photo upload
-document.getElementById('photo').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      photoData = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    photoData = null;
-  }
-});
+  // ✅ Open the new tab immediately (not blocked on mobile)
+  let newWindow = window.open("", "_blank");  
 
-function previewResume() {
-  const template = document.getElementById('templateSelect').value || "template1-preview.html";
-  
-  // Collect all form data
-  const formData = {};
-  const inputs = document.querySelectorAll("input:not([type='file']), textarea, select");
-  
+  let fileHandled = false;
+
   inputs.forEach(input => {
-    if (input.value.trim() !== "") {
-      formData[input.id] = input.value.trim();
+    if (input.id === "templateSelect") {
+      template = input.value;
+    } 
+    else if (input.type === "file" && input.files[0]) {
+      // ✅ Handle photo separately with FileReader
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        params.set("photo", e.target.result);
+        // ✅ After photo is ready, update the already opened tab
+        newWindow.location.href = template + "?" + params.toString();
+      };
+      reader.readAsDataURL(input.files[0]);
+      fileHandled = true;
+    } 
+    else if (input.value.trim() !== "") {
+      params.set(input.id, input.value.trim());
     }
   });
 
-  // Add photo data if available
-  if (photoData) {
-    formData.photo = photoData;
-  }
-
-  // Use sessionStorage to transfer data (works on mobile)
-  try {
-    sessionStorage.setItem('resumeData', JSON.stringify(formData));
-    
-    // Open preview in new tab
-    const newWindow = window.open(template, '_blank');
-    
-    // Fallback for popup blockers
-    if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-      alert('Please allow popups for this site to preview your resume, or try again.');
-    }
-  } catch (error) {
-    // Fallback: Use URL params but limit size
-    console.warn('SessionStorage not available, using URL params');
-    
-    // Create params without photo if sessionStorage fails
-    const params = new URLSearchParams();
-    Object.keys(formData).forEach(key => {
-      if (key !== 'photo') { // Skip photo to avoid URL length issues
-        params.set(key, formData[key]);
-      }
-    });
-    
-    const newWindow = window.open(template + "?" + params.toString(), '_blank');
-    
-    if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-      alert('Please allow popups for this site to preview your resume, or try again.');
-    }
+  // ✅ If no photo upload, load directly
+  if (!fileHandled) {
+    newWindow.location.href = template + "?" + params.toString();
   }
 }
+
 </script>
 
 </body>
