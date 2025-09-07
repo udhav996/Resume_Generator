@@ -361,8 +361,11 @@ function setPairs(id, value, sectionId){
 
 
 // Photo
-const photoData = getParam("photo");
-if(photoData){ document.getElementById("profilePhoto").src = photoData; }
+let photo = sessionStorage.getItem("resumePhoto"); 
+if (photo) {
+  document.getElementById("profilePhoto").src = photo;
+}
+
 
 // Name & Title
 document.getElementById("displayName").textContent = getParam("fullName") || "Your Name";
@@ -428,4 +431,5 @@ function downloadPDF() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 </body>
+
 </html>
