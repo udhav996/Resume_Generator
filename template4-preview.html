@@ -139,6 +139,26 @@
       word-break: break-word;
       white-space: normal;
     }
+
+    /* Default (desktop) */
+.section h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.section li {
+  font-size: 13px;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+  .section h2 {
+    font-size: 20px;   /* make headings stand out more */
+  }
+  .section li {
+    font-size: 12px;   /* make subpoints slightly smaller */
+  }
+}
+
   </style>
 </head>
 <body>
@@ -310,5 +330,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
+
 
 
