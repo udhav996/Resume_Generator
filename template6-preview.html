@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Force scaling like PDF preview -->
+  <!-- ✅ Force scaling like PDF preview (pinch zoom works) -->
   <meta name="viewport" content="width=1024, initial-scale=0.6, maximum-scale=3.0, user-scalable=yes">
   <title>Template 6 Resume</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -14,27 +14,22 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow: auto; /* allow scroll if needed */
       background: #f5f5f5;
       display: flex;
       justify-content: center;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     .resume {
-      width: 750px;            /* fixed width like desktop */
+      width: 750px;     /* fixed desktop width */
       max-width: 750px;
       background: #fff;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 40px;
-      transform-origin: top left; /* enable scaling */
-    }
-
-    /* ✅ Auto shrink on small screens */
-    @media (max-width: 1024px) {
-      .resume {
-        transform: scale(0.8);
-        width: 125%; /* prevent cutting */
-      }
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;  /* base size */
     }
 
     /* Header */
@@ -62,7 +57,7 @@
     }
     .header-info p {
       margin: 3px 0;
-      font-size: 16px;
+      font-size: 14px;
       color: #333;
     }
     .header-info i {
@@ -76,7 +71,7 @@
     .container {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
-      gap: 60px;
+      gap: 50px;
       padding: 30px;
     }
     .container > div { min-width: 0; }
@@ -96,13 +91,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-right: 50px;
     }
     .section h2 i {
       color: #ef84c3;
     }
     .section p, .section li {
-      font-size: 16px;
+      font-size: 13px;
       line-height: 1.6;
     }
     .section ul {
@@ -117,7 +111,7 @@
       font-weight: bold;
     }
 
-    /* ✅ Wrapping fixes */
+    /* ✅ Prevent layout breaking */
     .left, .right {
       min-width: 0;
       overflow-wrap: break-word;
@@ -131,10 +125,21 @@
       overflow-wrap: anywhere;
       word-break: break-word;
       hyphens: auto;
-      line-height: 1.6 !important;
-      margin-bottom: 6px !important;
-      display: block !important;
-      white-space: normal !important;
+    }
+
+    /* MOBILE FIX: keep hierarchy */
+    @media (max-width: 768px) {
+      .resume { font-size: 12px; }
+      .header-info h1 { font-size: 22px; }
+      .header-info p { font-size: 12px; }
+      .section h2 { font-size: 17px; }
+      .section p, .section li { font-size: 12px; }
+    }
+
+    /* Print */
+    @media print {
+      .resume { box-shadow: none; border-radius: 0; }
+      .section { break-inside: avoid; page-break-inside: avoid; }
     }
   </style>
 </head>
