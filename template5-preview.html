@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Force scaling like PDF -->
+  <!-- ✅ Force scaling like PDF (pinch zoom works) -->
   <meta name="viewport" content="width=1024, initial-scale=0.6, maximum-scale=3.0, user-scalable=yes">
   <title>Template 5 Resume</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -12,31 +12,28 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: auto; /* allow scroll if needed */
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       background: #f4f4f4;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
+    * { box-sizing: border-box; }
+
     .resume {
-      width: 750px;           /* fixed desktop width */
-      max-width: 750px;
+      width: 750px;
+      max-width: 750px;   /* lock desktop width */
       display: grid;
       grid-template-columns: 1fr 2fr;
       background: #fff;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 25px;
-      transform-origin: top left; /* scale from top left */
-    }
-
-    /* ✅ Auto shrink resume on small screens */
-    @media (max-width: 1024px) {
-      .resume {
-        transform: scale(0.8);
-        width: 125%; /* adjust so scaling doesn’t cut off */
-      }
+      font-family: 'Merriweather', serif;
+      font-size: 13px;  /* base size */
     }
 
     /* Left Column */
@@ -60,12 +57,12 @@
       margin: 10px 0 5px;
     }
     .left h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 400;
       margin: 0 0 20px;
     }
     .section-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       margin: 20px 0 10px;
       display: flex;
@@ -81,7 +78,7 @@
     }
     .left ul li {
       margin: 8px 0;
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -101,7 +98,7 @@
     }
     .right-section h2 {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -112,8 +109,9 @@
     .right-section h2 i {
       color: #fbc02d;
     }
-    .right-section p, .right-section li {
-      font-size: 14px;
+    .right-section p, 
+    .right-section li {
+      font-size: 13px;
       line-height: 1.6;
     }
     .right-section ul {
@@ -125,22 +123,32 @@
     }
     .experience-item strong {
       display: block;
-      font-size: 15px;
+      font-size: 14px;
     }
 
-    /* ✅ Prevent long text from breaking layout */
+    /* ✅ Prevent long text from breaking */
     .left, .right {
       min-width: 0;
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: normal;
     }
-    .contact span,
-    .summary,
-    .section li {
-      overflow-wrap: break-word;
-      word-break: break-word;
-      white-space: normal;
+
+    /* MOBILE FIX: keep hierarchy */
+    @media (max-width: 768px) {
+      .resume { font-size: 12px; }
+      .left h1 { font-size: 22px; }
+      .left h3 { font-size: 14px; }
+      .section-title { font-size: 14px; }
+      .left ul li { font-size: 12px; }
+      .right-section h2 { font-size: 17px; }
+      .right-section li, .right-section p { font-size: 12px; }
+    }
+
+    /* Print */
+    @media print {
+      .resume { box-shadow: none; border-radius: 0; }
+      .right-section, .left ul li { break-inside: avoid; page-break-inside: avoid; }
     }
   </style>
 </head>
@@ -155,7 +163,7 @@
     </button>
 
     <div class="resume">
-      <!-- Left Column -->
+      <!-- Left -->
       <div class="left">
         <img id="profilePhoto" src="" alt="Profile Photo">
         <h1 id="displayName">Your Name</h1>
@@ -193,28 +201,24 @@
         </div>
       </div>
       
-      <!-- Right Column -->
+      <!-- Right -->
       <div class="right">
         <div class="right-section" id="profileSection">
           <h2><i class="fas fa-user"></i> Profile</h2>
           <div id="summaryDisplay"></div>
         </div>
-
         <div class="right-section" id="experienceSection">
           <h2><i class="fas fa-briefcase"></i> Experience</h2>
           <ul id="experienceDisplay"></ul>
         </div>
-
         <div class="right-section" id="educationSection">
           <h2><i class="fas fa-graduation-cap"></i> Education</h2>
           <ul id="educationDisplay"></ul>
         </div>
-
         <div class="right-section" id="projectsSection">
           <h2><i class="fas fa-folder-open"></i> Projects</h2>
           <ul id="projectsDisplay"></ul>
         </div>
-
         <div class="right-section" id="certificationsSection">
           <h2><i class="fas fa-certificate"></i> Certifications</h2>
           <ul id="certificationsDisplay"></ul>
@@ -252,9 +256,7 @@ function populateResume() {
   };
 
   let photo = sessionStorage.getItem("resumePhoto"); 
-  if (photo) {
-    document.getElementById("profilePhoto").src = photo;
-  }
+  if (photo) document.getElementById("profilePhoto").src = photo;
 
   setText('displayName', params.get('fullName'));
   setText('displayTitle', params.get('jobRole'));
@@ -288,10 +290,7 @@ function downloadPDF() {
   const params = new URLSearchParams(window.location.search);
   const pdfSize = params.get('pdfSize') || 'a4';
   const element = document.querySelector('.resume');
-  if (!element) {
-    alert("Resume content not found!");
-    return;
-  }
+  if (!element) return alert("Resume content not found!");
   const opt = {
     margin: 0,
     filename: 'resume.pdf',
