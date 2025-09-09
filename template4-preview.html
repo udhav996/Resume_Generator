@@ -1,56 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <!-- ✅ Scaling fix for mobile preview/zoom -->
+  <meta charset="utf-8">
+  <!-- Use the same "zoomed-out" preview trick used in Template 3 so mobile shows the full layout.
+       User can still pinch-zoom (user-scalable=yes). -->
   <meta name="viewport" content="width=1024, initial-scale=0.6, maximum-scale=3.0, user-scalable=yes">
-  <title>Template 4 Resume</title>
+  <title>Template 4 Resume — Fixed mobile font scaling</title>
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:wght@400&display=swap" rel="stylesheet">
+
   <style>
+    /* Prevent mobile browsers from auto-scaling text for readability */
+    html, body {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: 'Lora', serif;
       margin: 0;
-      padding: 0;
+      padding: 20px;
       background: #f9f9f9;
       color: #333;
       display: flex;
       justify-content: center;
     }
-    h1, h2, h3 {
-      font-family: 'Montserrat', sans-serif;
-    }
 
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif; margin: 0; }
+
+    /* Fixed resume width (keeps layout identical between desktop & mobile preview) */
     .resume {
       width: 750px;
+      max-width: 750px;     /* prevent browser from shrinking unexpectedly */
       background: #fff;
       padding: 30px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 20px;
-
-      /* ✅ Normalize base font */
+      /* Base font size for the whole card (explicit so mobile scaling is predictable) */
       font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ✅ Text hierarchy */
-    .resume h1 {
-      font-size: 26px;
-      font-weight: 600;
-    }
-    .resume h2 {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .resume h3 {
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .resume p,
-    .resume li,
-    .resume span {
-      font-size: 13px;
-      line-height: 1.5;
-    }
+    /* Clear text hierarchy: headings larger than list items always */
+    .resume h1 { font-size: 26px; font-weight: 600; }
+    .resume h2 { font-size: 18px; font-weight: 600; letter-spacing: 1px; }
+    .resume h3 { font-size: 14px; font-weight: 500; color: #555; }
+    .resume p, .resume li, .resume span { font-size: 13px; line-height: 1.5; color: #333; }
 
     /* Header */
     .header {
@@ -60,7 +60,6 @@
       position: relative;
       text-align: center;
     }
-
     .header img {
       width: 120px;
       height: 150px;
@@ -71,24 +70,19 @@
       right: 0;
     }
 
-    /* Contact */
+    /* Contact row */
     .contact {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       margin: 20px 0;
       justify-content: center;
+      font-size: 13px;
     }
-    .contact div {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .contact i {
-      color: #444;
-    }
+    .contact div { display:flex; align-items:center; gap:8px; }
+    .contact i { color: #444; flex: 0 0 auto; }
 
-    /* Layout */
+    /* Grid layout */
     .grid {
       display: grid;
       grid-template-columns: 50% 50%;
@@ -97,72 +91,57 @@
       padding-top: 20px;
     }
 
-    .section {
-      margin-bottom: 25px;
-    }
+    /* allow columns to shrink and not push outside the container */
+    .grid > div { min-width: 0; }
+
+    .section { margin-bottom: 25px; }
     .section h2 {
-  font-size: 18px;       /* bigger than list text */
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 5px;
-  letter-spacing: 1.5px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #111;
-}
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #222;
+    }
+    .section h2 i { color: #444; flex: 0 0 auto; }
 
-    .section h2 i {
-      color: #444;
+    .section ul { padding-left: 20px; margin: 0; }
+    .section li {
+      font-size: 13px;     /* ensure list text is slightly smaller than headings */
+      margin-bottom: 6px;
+      line-height: 1.45;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
-    .section ul {
-      padding-left: 20px;
-      margin: 0;
-    }
-   .section li {
-  font-size: 12.5px;     /* slightly smaller */
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
 
-    /* ✅ Prevent layout breaking */
-    .grid > div {
-      min-width: 0;
-    }
-    .section,
-    .section li,
-    .contact span,
-    #summaryDisplay {
+    /* ensure summary / contact / list items wrap properly */
+    .section, .section li, .contact span, #summaryDisplay {
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: normal;
     }
 
-    /* Default (desktop) */
-.section h2 {
-  font-size: 18px;
-  font-weight: 600;
-}
-.section li {
-  font-size: 13px;
-}
+    /* MOBILE: keep same visual hierarchy but slightly tweak sizes so headings remain dominant */
+    @media (max-width: 768px) {
+      /* We keep the fixed resume width via viewport trick, but still tweak font sizes for clarity */
+      .resume { font-size: 12px; }         /* small overall reduction on very small screens */
+      .resume h1 { font-size: 24px; }
+      .resume h2 { font-size: 17px; }
+      .section li { font-size: 12px; }
+      .contact { font-size: 12px; }
+    }
 
-/* Mobile fix */
-@media (max-width: 768px) {
-  .section h2 {
-    font-size: 20px;   /* make headings stand out more */
-  }
-  .section li {
-    font-size: 12px;   /* make subpoints slightly smaller */
-  }
-}
-
+    /* Print/PDF improvements */
+    @media print {
+      .resume { box-shadow: none; border-radius: 0; }
+      .section, .section li { break-inside: avoid; page-break-inside: avoid; }
+    }
   </style>
 </head>
 <body>
-  <div style="display:flex; flex-direction:column; align-items:center;">
+  <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
     <button onclick="downloadPDF()" 
         style="margin:20px auto;display:block;
                padding:10px 20px;background:#8cabe8;
@@ -171,7 +150,7 @@
       Download PDF
     </button>
 
-    <div class="resume">
+    <div class="resume" role="main" id="resume">
       <!-- Header -->
       <div class="header" id="headerSection">
         <img id="profilePhoto" src="" alt="Profile Photo">
@@ -189,7 +168,7 @@
       </div>
 
       <!-- Grid Sections -->
-      <div class="grid">
+      <div class="grid" aria-label="resume content">
         <!-- Left Column -->
         <div>
           <div class="section" id="skillsSection">
@@ -267,13 +246,11 @@
       }
     };
 
-    // Photo
-    let photo = sessionStorage.getItem("resumePhoto"); 
-    if (photo) {
-      document.getElementById("profilePhoto").src = photo;
-    }
+    // Photo (from sessionStorage if set by your input page)
+    let photo = sessionStorage.getItem("resumePhoto");
+    if (photo) document.getElementById("profilePhoto").src = photo;
 
-    // Name & Title
+    // Basic fields
     setText('displayName', params.get('fullName'));
     setText('displayTitle', params.get('jobRole'));
 
@@ -289,7 +266,7 @@
       if (params.get('github')) setText('githubDisplay', params.get('github')); else document.getElementById('githubItem').style.display = "none";
     }
 
-    // Profile
+    // Summary (keep line breaks)
     const summary = params.get('summary');
     if (summary) {
       document.getElementById('summaryDisplay').innerHTML = summary.replace(/\n/g, "<br>");
@@ -297,6 +274,7 @@
       document.getElementById('profileSection').style.display = "none";
     }
 
+    // Fill lists
     fillList('educationDisplay', formatPairs(params.get('education')), 'educationSection');
     fillList('experienceDisplay', formatPairs(params.get('experience')), 'experienceSection');
     fillList('skillsDisplay', formatList(params.get('skills')), 'skillsSection');
@@ -312,14 +290,10 @@
   function downloadPDF() {
     const params = new URLSearchParams(window.location.search);
     const pdfSize = params.get('pdfSize') || 'a4';
-    const element = document.querySelector('.resume-container, .resume');
-    if (!element) {
-      alert("Resume content not found!");
-      return;
-    }
+    const element = document.querySelector('.resume');
+    if (!element) { alert("Resume content not found!"); return; }
     const opt = {
-      margin: 0,
-      filename: 'resume.pdf',
+      margin: 0, filename: 'resume.pdf',
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
       jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
@@ -327,9 +301,7 @@
     html2pdf().set(opt).from(element).save();
   }
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
-
-
-
