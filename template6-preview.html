@@ -273,7 +273,15 @@ function downloadPDF() {
   const params = new URLSearchParams(window.location.search);
   const pdfSize = params.get('pdfSize') || 'a4';
   const element = document.querySelector('.resume');
-  if (!element) { alert("Resume content not found!"); return; }
+  if (!element) { 
+    alert("Resume content not found!"); 
+    return; 
+  }
+
+  // ✅ Temporarily set resume width for PDF export
+  const originalWidth = element.style.width;
+  element.style.width = "800px";  // best match for A4
+
   const opt = {
     margin: 0,
     filename: 'resume.pdf',
@@ -281,11 +289,17 @@ function downloadPDF() {
     html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
     jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
   };
-  html2pdf().set(opt).from(element).save();
+
+  html2pdf().set(opt).from(element).save().then(() => {
+    // ✅ Restore original width after saving
+    element.style.width = originalWidth;
+  });
 }
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
+
 
 
