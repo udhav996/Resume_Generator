@@ -269,28 +269,35 @@ function populateResume() {
 }
 window.onload = populateResume;
 function downloadPDF() {
-  const params = new URLSearchParams(window.location.search);
-  const pdfSize = params.get('pdfSize') || 'a4';
   const element = document.querySelector('.resume');
-  if (!element) { 
-    alert("Resume content not found!"); 
-    return; 
+  if (!element) {
+    alert("Resume content not found!");
+    return;
   }
 
-  // ✅ Temporarily set resume width for PDF export
+  // ✅ Temporarily disable scaling for PDF export
+  const originalTransform = element.style.transform;
   const originalWidth = element.style.width;
-  element.style.width = "800px";  // best match for A4
 
+  element.style.transform = "none";
+  element.style.width = "800px";  // fixed width for A4
+  
   const opt = {
-    margin: 0,
+    margin: [10, 10, 10, 10], // small margins
     filename: 'resume.pdf',
     image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
-    jsPDF: { unit: 'pt', format: pdfSize, orientation: 'portrait' }
+    html2canvas: { 
+      scale: 2,
+      scrollX: 0,
+      scrollY: 0,
+      width: 800  // force canvas width
+    },
+    jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
   };
 
   html2pdf().set(opt).from(element).save().then(() => {
-    // ✅ Restore original width after saving
+    // ✅ Restore styles after export
+    element.style.transform = originalTransform;
     element.style.width = originalWidth;
   });
 }
@@ -300,6 +307,7 @@ function downloadPDF() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
