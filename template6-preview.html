@@ -275,38 +275,39 @@ function downloadPDF() {
     return;
   }
 
-  // ✅ Temporarily disable scaling for PDF export
-  const originalTransform = element.style.transform;
-  const originalWidth = element.style.width;
+  // Detect mobile
+  const isMobile = window.innerWidth <= 768;
 
-  element.style.transform = "none";
-  element.style.width = "800px";  // fixed width for A4
-  
+  // Backup
+  const originalWidth = element.style.width;
+  const originalTransform = element.style.transform;
+
+  // Apply narrower width for mobile export
+  if (isMobile) {
+    element.style.transform = "none";   // remove scale
+    element.style.width = "650px";      // ✅ smaller width for PDF
+  }
+
   const opt = {
-    margin: [10, 10, 10, 10], // small margins
+    margin: 0,
     filename: 'resume.pdf',
     image: { type: 'jpeg', quality: 1 },
-    html2canvas: { 
-      scale: 2,
-      scrollX: 0,
-      scrollY: 0,
-      width: 800  // force canvas width
-    },
+    html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
     jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
   };
 
   html2pdf().set(opt).from(element).save().then(() => {
-    // ✅ Restore styles after export
-    element.style.transform = originalTransform;
+    // Restore styles after download
     element.style.width = originalWidth;
+    element.style.transform = originalTransform;
   });
 }
-
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
